@@ -87,6 +87,9 @@
         gap: 0.5rem;
         text-align: center;
     }
+    .logo {
+        height: auto;
+    }
 
     .section_pic-container {
         width: auto;
