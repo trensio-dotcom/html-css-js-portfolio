@@ -6,15 +6,21 @@
   <title>Grid / List View Gallery</title>
   <style>
     /* Basic reset & layout */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
     body {
-      font-family: Arial, sans-serif;
+      font-family:  "Poppins", sans-serif;
       background: #f5f5f5;
       padding: 20px;
+    }
+
+    .top-head {
+        padding: 3rem;
+        text-align: center;
     }
     .controls {
       display: flex;
@@ -32,7 +38,7 @@
       transition: 0.2s;
     }
     button.active {
-      background: #007bff;
+      background: #000000;
       color: white;
       font-weight: bold;
     }
@@ -42,6 +48,7 @@
       gap: 20px;
       max-width: 1200px;
       margin: 0 auto;
+      padding-top: 20px;
       transition: all 0.3s ease;
     }
     /* Default: grid view */
@@ -63,10 +70,12 @@
       flex-direction: column;
     }
     .gallery.list-view .gallery-item {
+      display: flex;
       flex-direction: row;      /* image left, text right in list mode */
       align-items: center;
       gap: 20px;
       padding: 15px;
+      transform: none;
     }
     .gallery-item img {
       width: 100%;
@@ -96,9 +105,47 @@
       color: #666;
       font-size: 14px;
     }
+
+    /*  Lightbox Modal*/
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.9);
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-content {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+        border-radius: 4px;
+    }
+
+    .close {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: #fff;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .close:hover {
+        color: #ccc;
+    }
   </style>
 </head>
 <body>
+
+    <h1 class="top-head">Business Flyers</h1>
   <div class="controls">
     <button id="gridBtn" class="active">Grid</button>
     <button id="listBtn">List</button>
@@ -106,133 +153,133 @@
 
   <div class="gallery" id="gallery">
     <!-- Example items – replace with your own images and text -->
-    <div class="gallery-item">
+    <div class="gallery-item" data-img-id="1">
       <img src="./Asserts/Business flyers/1.jpg" alt="Sample 1">
       <div class="caption">
-        <h3>Mountain Lake</h3>
-        <p>Beautiful view of the alps</p>
+        <h3>Anova Foods</h3>
+        <p>Advertisement on Kilombero rice</p>
       </div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-img-id="2">
       <img src="./Asserts/Business flyers/2.jpg" alt="Sample 2">
       <div class="caption">
-        <h3>City Lights</h3>
-        <p>Downtown at night</p>
+        <h3>Moreen Hair Salon</h3>
+        <p>Calling customers to cheap beauty</p>
       </div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-img-id="3">
       <img src="./Asserts/Business flyers/3.jpg" alt="Sample 3">
       <div class="caption">
         <h3>Forest Trail</h3>
         <p>Sunny afternoon hike</p>
       </div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-img-id="4">
       <img src="./Asserts/Business flyers/4.jpg" alt="Sample 4">
       <div class="caption">
         <h3>Ocean Waves</h3>
         <p>Relaxing beach vibes</p>
       </div>
     </div>
-    <div class="gallery-item">
-      <img src="./Asserts/Business flyers/5.jpg" alt="Sample 4">
+    <div class="gallery-item" data-img-id="5">
+      <img src="./Asserts/Business flyers/5.jpg" alt="Sample 5">
       <div class="caption">
         <h3>Ocean Waves</h3>
         <p>Relaxing beach vibes</p>
       </div>
     </div>
-    <div class="gallery-item">
-      <img src="./Asserts/Business flyers/6.jpg" alt="Sample 4">
+    <div class="gallery-item" data-img-id="6">
+      <img src="./Asserts/Business flyers/6.jpg" alt="Sample 6">
       <div class="caption">
         <h3>Ocean Waves</h3>
         <p>Relaxing beach vibes</p>
       </div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-img-id="7">
       <img src="./Asserts/Business flyers/7.jpg" alt="Sample 4">
       <div class="caption">
         <h3>Ocean Waves</h3>
         <p>Relaxing beach vibes</p>
       </div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-img-id="8">
       <img src="./Asserts/Business flyers/8.jpg" alt="Sample 4">
       <div class="caption">
         <h3>Ocean Waves</h3>
         <p>Relaxing beach vibes</p>
       </div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-img-id="9">
       <img src="./Asserts/Business flyers/9.jpg" alt="Sample 4">
       <div class="caption">
         <h3>Ocean Waves</h3>
         <p>Relaxing beach vibes</p>
       </div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-img-id="10">
       <img src="./Asserts/Business flyers/10.jpg" alt="Sample 4">
       <div class="caption">
         <h3>Ocean Waves</h3>
         <p>Relaxing beach vibes</p>
       </div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-img-id="11">
       <img src="./Asserts/Business flyers/11.jpg" alt="Sample 4">
       <div class="caption">
         <h3>Ocean Waves</h3>
         <p>Relaxing beach vibes</p>
       </div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-img-id="12">
       <img src="./Asserts/Business flyers/12.jpg" alt="Sample 4">
       <div class="caption">
         <h3>Ocean Waves</h3>
         <p>Relaxing beach vibes</p>
       </div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-img-id="13">
       <img src="./Asserts/Business flyers/13.jpg" alt="Sample 4">
       <div class="caption">
         <h3>Ocean Waves</h3>
         <p>Relaxing beach vibes</p>
       </div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-img-id="14">
       <img src="./Asserts/Business flyers/14.jpg" alt="Sample 4">
       <div class="caption">
         <h3>Ocean Waves</h3>
         <p>Relaxing beach vibes</p>
       </div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-img-id="15">
       <img src="./Asserts/Business flyers/15.jpg" alt="Sample 4">
       <div class="caption">
         <h3>Ocean Waves</h3>
         <p>Relaxing beach vibes</p>
       </div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-img-id="16">
       <img src="./Asserts/Business flyers/16.jpg" alt="Sample 4">
       <div class="caption">
         <h3>Ocean Waves</h3>
         <p>Relaxing beach vibes</p>
       </div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-img-id="17">
       <img src="./Asserts/Business flyers/17.jpg" alt="Sample 4">
       <div class="caption">
         <h3>Ocean Waves</h3>
         <p>Relaxing beach vibes</p>
       </div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-img-id="18">
       <img src="./Asserts/Business flyers/18.jpg" alt="Sample 4">
       <div class="caption">
         <h3>Ocean Waves</h3>
         <p>Relaxing beach vibes</p>
       </div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-img-id="19">
       <img src="./Asserts/Business flyers/19.jpg" alt="Sample 4">
       <div class="caption">
         <h3>Ocean Waves</h3>
@@ -241,23 +288,64 @@
     </div>
   </div>
 
+  <!-- Lightbox Modal-->
+   <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+   </div>
+
   <script>
+    //Toggle grid/list view
     const gallery = document.getElementById('gallery');
     const gridBtn = document.getElementById('gridBtn');
     const listBtn = document.getElementById('listBtn');
 
-    // Toggle to grid view
     gridBtn.addEventListener('click', () => {
       gallery.classList.remove('list-view');
       gridBtn.classList.add('active');
       listBtn.classList.remove('active');
     });
 
-    // Toggle to list view
     listBtn.addEventListener('click', () => {
       gallery.classList.add('list-view');
       listBtn.classList.add('active');
       gridBtn.classList.remove('active');
+    });
+
+    // Lightbox functionality
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    const closeBtn = document.querySelector('.close');
+
+    // Get all gallery items
+    const items = document.querySelectorAll ('.gallery-item');
+
+    items.forEach(item => {
+        item.addEventListener('click' , () => {
+            const img = item.querySelector('img');
+    
+
+            modalImg.src = img.src;
+            modal.style.display = 'flex';
+        });
+    });
+
+    // close modal when clicking on X or outside the image
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    modal.addEventListener('click' , (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    //Optional: Close with Escape key
+    document.addEventListener('keydown' , (e) => {
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
+            modal.style.display = 'none';
+        }
     });
   </script>
 </body>
