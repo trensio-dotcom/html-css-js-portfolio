@@ -7,6 +7,264 @@
     <title>Trensio Portfoliio</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="mediainquiries.css">
+<style>
+     /* main card container */
+    .showcase-container {
+      max-width: 1200px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(2px);
+      border-radius: 2rem;
+      border: rgb(53, 53, 53) 0.1rem solid;
+      padding: 1.8rem 1.8rem 2rem 1.8rem;
+      transition: all 0.2s ease;
+      justify-self: center;
+    }
+
+    /* slideshow core wrapper */
+    .slideshow-wrapper {
+      position: relative;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      border: rgb(53, 53, 53) 0.1rem solid;
+      background: #1a1e24;
+    }
+
+    /* main slideshow container (relative for absolute slides) */
+    .slideshow-container {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      background: #0f1217;
+      overflow: hidden;
+    }
+
+    /* each slide item (absolutely positioned) */
+    .slide-item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.45s cubic-bezier(0.2, 0.9, 0.4, 1.1), visibility 0.45s;
+      background-color: #10131c;
+    }
+
+    .slide-item.active-slide {
+      opacity: 1;
+      visibility: visible;
+      z-index: 5;
+    }
+
+    .slide-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.92) contrast(1.05);
+      transition: transform 0.3s ease;
+    }
+
+    /* overlay text "Explore our latest newly uploads" positioned on top of images */
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 20;
+      pointer-events: none;      /* allows clicking through to buttons / nav */
+      padding: 1.8rem 2rem;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.25) 70%, transparent 100%);
+      border-radius: 1.5rem 1.5rem 0 0;
+    }
+
+    .hero-overlay h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      color: white;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+      margin: 0;
+      line-height: 1.2;
+      backdrop-filter: blur(2px);
+      display: inline-block;
+      padding-left: 1rem;
+    }
+
+    .hero-overlay p {
+      color: rgba(255, 255, 240, 0.9);
+      margin-top: 0.4rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      padding-left: 1rem;
+    }
+
+    /* navigation buttons (prev/next) */
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(20, 24, 35, 0.75);
+      backdrop-filter: blur(8px);
+      border: none;
+      width: 46px;
+      height: 46px;
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      z-index: 25;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      font-family: monospace;
+      line-height: 1;
+    }
+
+    .nav-btn:hover {
+      background: rgb(53, 53, 53);
+      color: #c7c0c0;
+      transform: translateY(-50%) scale(1.03);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+    }
+
+    .prev-btn {
+      left: 18px;
+    }
+
+    .next-btn {
+      right: 18px;
+    }
+
+    /* dots indicator area */
+    .dots-container {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 1.3rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      background: #b9c2ce;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .dot.active-dot {
+      background: rgb(53, 53, 53);
+      width: 26px;
+      border-radius: 20px;
+    }
+
+    .dot:hover {
+      background: rgb(53, 53, 53);
+      transform: scale(1.2);
+    }
+
+    /* Button group: projects & latest */
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 1rem 0 0.5rem 0;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: #ffffff;
+      padding: 0.8rem 2rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: all 0.25s;
+      color: #2c3e4e;
+      letter-spacing: 0.3px;
+      border: 1px solid rgb(53, 53, 53);   /* more visible border */
+      outline: none;
+    }
+
+    .filter-btn.active-btn {
+      background: rgb(53, 53, 53);
+      color: white;
+      border: 1px solid #ffffc84d;
+    }
+
+    .filter-btn:not(.active-btn):hover {
+      background:  rgb(53, 53, 53);
+      color: rgb(255, 255, 255)
+      
+    }
+
+
+    /* subtle extra style */
+    .info-badge {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #5b6f82;
+      margin-top: 1.2rem;
+      border-top: 1px solid rgb(53, 53, 53);
+      padding-top: 1rem;
+    }
+    /*icons-1*/
+    .icon-1{
+      height: 1.5rem;
+      filter: brightness(0) invert(1);
+    }
+
+    @media (max-width: 720px) {
+      .showcase-container {
+        padding: 1rem;
+      }
+      .slideshow-container {
+        height: 320px;
+        align-items: center;
+        justify-content: center;
+      }
+      .hero-overlay h2 {
+        font-size: 1.3rem;
+      }
+      .hero-overlay {
+        padding: 1rem 1.2rem;
+      }
+      .nav-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 1.6rem;
+      }
+      .filter-btn {
+        padding: 0.5rem 1.3rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .slideshow-container {
+        height: 260px;
+        align-items: center;
+        justify-content: center;
+      }
+      .hero-overlay h2 {
+        font-size: 1.1rem;
+      }
+      .hero-overlay p {
+        font-size: 0.7rem;
+      }
+      
+    }
+  </style>
 </head>
 <body>
     <nav id="desktop-nav">
@@ -61,6 +319,40 @@
             </div>
         </div>
     </section>
+
+
+<section>
+
+<div class="showcase-container">
+  <!-- slideshow main area -->
+  <div class="slideshow-wrapper">
+    <div class="slideshow-container" id="slideshowContainer">
+      <!-- Overlay text on top of images (words: Explore our latest newly uploads) -->
+      <div class="hero-overlay">
+        <h1> Explore our latest newly uploads</h1>
+        <p>Creative collection & fresh perspectives</p>
+      </div>
+      <!-- slides will be injected dynamically here -->
+      <!-- Prev / Next buttons -->
+      <button class="nav-btn prev-btn" id="prevSlideBtn" aria-label="Previous slide"><img src="./Asserts/new/left-arrow.png" alt=" left-arrow" class="icon-1"></button>
+      <button class="nav-btn next-btn" id="nextSlideBtn" aria-label="Next slide"><img src="./Asserts/new/right-arrow.png" alt=" right-arrow icon" class="icon-1"></button>
+    </div>
+  </div>
+
+  <!-- Dots indicator (dynamic) -->
+  <div class="dots-container" id="dotsContainer"></div>
+
+  <!-- Button group: Projects (active by default) & Latest (clickable) -->
+  <div class="action-buttons">
+    <button class="filter-btn" id="projectsBtn"> LATEST UPLOADS</button>
+    <button class="filter-btn" id="latestBtn" onclick="location.href='Latest Uploads.html'"> EXPLORE </button>
+  </div>
+  <div class="info-badge">
+    Active button shows current gallery | Click "Latest" to explore newest images
+  </div>
+</div>
+
+</section>
 
     <section id="about">
         <p class="section_text_p1"> Get to Know More</p>        
@@ -306,5 +598,210 @@
         <p>Copyright &#169; 2026 Trensio's Elite. All rights Reserved.</p>
     </footer>
    <script src="script.js"></script> 
+
+   <script>
+  // ----- IMAGE DATASETS -----
+  // Projects images (diverse, high-quality placeholder images from Picsum with interesting IDs)
+  const projectsImages = [
+    { src: "cert.jpg", alt: "Modern architecture project" },
+    { src: "Caroline Mlewa.jpg", alt: "Nature & landscape design" },
+    { src: "port we.jpg", alt: "Urban greenery concept" },
+    { src: "luanar.jpg", alt: "Sunset over city skyline" },
+    { src: "logist.jpg", alt: "Industrial design project"}
+  ];
+
+  // Latest uploads (fresh images, different style)
+  
+
+  // ----- DOM ELEMENTS -----
+  const slidesContainer = document.getElementById('slideshowContainer');
+  const dotsContainer = document.getElementById('dotsContainer');
+  const prevBtn = document.getElementById('prevSlideBtn');
+  const nextBtn = document.getElementById('nextSlideBtn');
+  const projectsBtn = document.getElementById('projectsBtn');
+  const latestBtn = document.getElementById('latestBtn');
+
+  // ----- STATE -----
+  let currentImagesSet = [];       // reference to current array (projects or latest)
+  let currentIndex = 0;
+  let activeCategory = 'projects'; // 'projects' or 'latest'
+
+  // Helper to rebuild slides completely (when switching between projects/latest)
+  function buildSlidesDOM(imagesArray) {
+    // remove existing slide items except the nav & overlay (keep overlay but it's separate)
+    // we target only .slide-item elements
+    const existingSlides = document.querySelectorAll('.slide-item');
+    existingSlides.forEach(slide => slide.remove());
+    
+    // create new slides
+    imagesArray.forEach((imgData, idx) => {
+      const slideDiv = document.createElement('div');
+      slideDiv.className = 'slide-item';
+      if (idx === currentIndex) slideDiv.classList.add('active-slide');
+      const img = document.createElement('img');
+      img.src = imgData.src;
+      img.alt = imgData.alt;
+      img.loading = "eager";
+      slideDiv.appendChild(img);
+      slidesContainer.appendChild(slideDiv);
+    });
+  }
+
+  // update active slide visibility based on currentIndex (no rebuild)
+  function updateActiveSlideOnly() {
+    const allSlides = document.querySelectorAll('.slide-item');
+    if (!allSlides.length) return;
+    allSlides.forEach((slide, idx) => {
+      if (idx === currentIndex) {
+        slide.classList.add('active-slide');
+      } else {
+        slide.classList.remove('active-slide');
+      }
+    });
+  }
+
+  // rebuild dots completely from current image set length
+  function buildDots() {
+    dotsContainer.innerHTML = '';
+    if (!currentImagesSet.length) return;
+    for (let i = 0; i < currentImagesSet.length; i++) {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      if (i === currentIndex) dot.classList.add('active-dot');
+      dot.setAttribute('data-index', i);
+      dotsContainer.appendChild(dot);
+    }
+  }
+
+  // update dots active class based on currentIndex
+  function updateDotsActive() {
+    const dots = document.querySelectorAll('.dot');
+    dots.forEach((dot, idx) => {
+      if (idx === currentIndex) {
+        dot.classList.add('active-dot');
+      } else {
+        dot.classList.remove('active-dot');
+      }
+    });
+  }
+
+  // full refresh after set change (rebuild slides + dots, reset index)
+  function refreshFullGallery(newImagesArray, resetIndex = true) {
+    if (resetIndex) currentIndex = 0;
+    currentImagesSet = newImagesArray;
+    buildSlidesDOM(currentImagesSet);
+    buildDots();
+    // ensure active slide correct
+    updateActiveSlideOnly();
+    updateDotsActive();
+  }
+
+  // switch between project and latest categories
+  function switchToCategory(category) {
+    if (category === 'projects') {
+      if (activeCategory === 'projects') return; // already active
+      activeCategory = 'projects';
+      currentImagesSet = projectsImages;
+      currentIndex = 0;
+      refreshFullGallery(projectsImages, true);
+      // update button active styles
+      projectsBtn.classList.add('active-btn');
+      latestBtn.classList.remove('active-btn');
+    } 
+    else if (category === 'latest') {
+      if (activeCategory === 'latest') return;
+      activeCategory = 'latest';
+      currentImagesSet = latestImages;
+      currentIndex = 0;
+      refreshFullGallery(latestImages, true);
+      latestBtn.classList.add('active-btn');
+      projectsBtn.classList.remove('active-btn');
+    }
+  }
+
+  // navigation: next slide (wrap around)
+  function nextSlide() {
+    if (!currentImagesSet.length) return;
+    currentIndex = (currentIndex + 1) % currentImagesSet.length;
+    updateActiveSlideOnly();
+    updateDotsActive();
+  }
+
+  // previous slide (wrap around)
+  function prevSlide() {
+    if (!currentImagesSet.length) return;
+    currentIndex = (currentIndex - 1 + currentImagesSet.length) % currentImagesSet.length;
+    updateActiveSlideOnly();
+    updateDotsActive();
+  }
+
+  // go to specific slide index (used by dots)
+  function goToSlide(index) {
+    if (!currentImagesSet.length) return;
+    if (index < 0 || index >= currentImagesSet.length) return;
+    currentIndex = index;
+    updateActiveSlideOnly();
+    updateDotsActive();
+  }
+
+  // ---- EVENT HANDLERS (delegation for dynamic dots) ----
+  function handleDotClick(e) {
+    let target = e.target;
+    if (target.classList && target.classList.contains('dot')) {
+      const idx = target.getAttribute('data-index');
+      if (idx !== null) {
+        goToSlide(parseInt(idx, 10));
+      }
+    }
+  }
+
+  // ---- initial setup and listeners ----
+  function init() {
+    // set initial dataset: Projects (active)
+    activeCategory = 'projects';
+    currentImagesSet = projectsImages;
+    currentIndex = 0;
+    buildSlidesDOM(currentImagesSet);
+    buildDots();
+    updateActiveSlideOnly();
+    updateDotsActive();
+    
+    // active button style for projects (initial)
+    projectsBtn.classList.add('active-btn');
+    latestBtn.classList.remove('active-btn');
+    
+    // event listeners for nav buttons
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+    
+    // category buttons
+    projectsBtn.addEventListener('click', () => switchToCategory('projects'));
+    latestBtn.addEventListener('click', () => switchToCategory('latest'));
+    
+    // dot container event delegation (since dots are recreated dynamically)
+    dotsContainer.addEventListener('click', handleDotClick);
+    
+    // optional: keyboard accessibility (left/right arrow keys)
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        prevSlide();
+        e.preventDefault();
+      } else if (e.key === 'ArrowRight') {
+        nextSlide();
+        e.preventDefault();
+      }
+    });
+    
+    // ensure container height adapts: no extra images flickering, cross-browser
+    // small fix: add a resize listener to maintain consistent overlay ? no needed.
+  }
+  
+  // start everything when DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>
 </body>
 </html>
